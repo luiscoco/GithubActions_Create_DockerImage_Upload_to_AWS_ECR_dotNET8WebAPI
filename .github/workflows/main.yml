@@ -38,3 +38,9 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+    - name: Cleanup old images
+      run: |
+        aws ecr-public describe-images --repository-name ${{ env.IMAGE_NAME }} --region ${{ env.AWS_REGION }} | \
+        jq -r '.imageDetails | sort_by(.imagePushedAt) | .[:-1][] | .imageDigest' | \
+        xargs -I {} aws ecr-public batch-delete-image --repository-name ${{ env.IMAGE_NAME }} --region ${{ env.AWS_REGION }} --image-ids imageDigest={}
