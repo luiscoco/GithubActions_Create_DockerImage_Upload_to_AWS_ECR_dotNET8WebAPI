@@ -31,6 +31,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ./Dockerfile  # Path to your Dockerfile
+        file: ./Dockerfile
         push: true
-        tags: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/dotnet8webapirepo:latest
+
