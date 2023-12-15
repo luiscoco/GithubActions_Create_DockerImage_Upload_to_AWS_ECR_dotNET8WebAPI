@@ -6,11 +6,13 @@
 
 ## 2. Create a AWS ECR Public repo for storing the Docker image
 
+ 
+## 3. Create the Github Secrets to store the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
 
 
 
 
-## 3. 
+## 4. 
 
 This is the **main.yml** file for executing the github action workflow to create a .NET 8 Web API Docker image and upload it to AWS ECR 
 
@@ -51,7 +53,7 @@ jobs:
         docker push ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 ```
 
-## 4. How deploy to AWS ECS the Docker image stored in my ECR repo 
+## 5. How deploy to AWS ECS the Docker image stored in my ECR repo 
 
 We create a **ECS Cluster**:
 
