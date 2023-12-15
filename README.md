@@ -1,5 +1,17 @@
 # WebApplication1
 
+
+## 1. 
+
+
+## 2. Create a AWS ECR Public repo for storing the Docker image
+
+
+
+
+
+## 3. 
+
 This is the **main.yml** file for executing the github action workflow to create a .NET 8 Web API Docker image and upload it to AWS ECR 
 
 ```yaml
@@ -38,3 +50,55 @@ jobs:
         docker build -t ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest .
         docker push ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 ```
+
+## 4. How deploy to AWS ECS the Docker image stored in my ECR repo 
+
+We create a **ECS Cluster**:
+
+```
+aws ecs create-cluster --cluster-name myCluster
+```
+
+We create a new **Task Definition**:
+
+```
+aws ecs register-task-definition --cli-input-json file://task-definition.json
+```
+
+We get my AWS Account default **VPC** name:
+
+```
+aws ec2 describe-vpcs --filters "Name=isDefault,Values=true" --query "Vpcs[].VpcId" --output text
+```
+
+For example the VPC name output is: **vpc-07d51d92f73354c0b**
+
+With that VPC name we can retrieve the attached **Subnets** names:
+
+```
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-07d51d92f73354c0b" --query "Subnets[].{ID:SubnetId,Name:Tags[?Key=='Name']|[0].Value}"
+```
+
+For example the Subnet output is: **subnet-0df35048d0d30e90f**
+
+We also get the **Security Group** name with this command:
+
+```
+aws ec2 describe-security-groups --filters "Name=vpc-id,Values=vpc-07d51d92f73354c0b" "Name=group-name,Values=default" --query "SecurityGroups[].{ID:GroupId,Name:GroupName}" --output text
+```
+
+For example the Security Group output is: **sg-051b9197846af4fe0**
+
+We create a new **Service**:
+
+```
+aws ecs create-service --cluster myCluster --service-name myDotnetService --task-definition myDotnetApp --launch-type FARGATE --desired-count 1 --network-configuration "awsvpcConfiguration={subnets=[subnet-0df35048d0d30e90f],securityGroups=[sg-051b9197846af4fe0],assignPublicIp=ENABLED}"
+```
+
+We describe the c
+
+```
+aws ecs describe-services --cluster myCluster --services myDotnetService
+```
+
+
