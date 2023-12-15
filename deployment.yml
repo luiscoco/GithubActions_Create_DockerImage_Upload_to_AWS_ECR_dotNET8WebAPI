@@ -1,0 +1,13 @@
+﻿ selector:
+    matchLabels:
+      app: webapplication1
+  template:
+    metadata:
+      labels:
+        app: webapplication1
+    spec:
+      containers:
+      - name: webapplication1
+        image: public.ecr.aws/x6y4g2f4/dotnet8webapirepo  # Replace with your image path
+        ports:
+        - containerPort: 8080
