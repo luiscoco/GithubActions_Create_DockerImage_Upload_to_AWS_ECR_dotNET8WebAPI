@@ -62,7 +62,7 @@ aws ecs create-cluster --cluster-name myCluster
 We create a new **Task Definition**:
 
 ```
-aws ecs register-task-definition --cli-input-json file://C:/AWS%20Task%20Definition/task-definition.json
+aws ecs register-task-definition --cli-input-json file://"C:/AWS Task Definition/task-definition.json"
 ```
 
 We get my AWS Account default **VPC** name:
