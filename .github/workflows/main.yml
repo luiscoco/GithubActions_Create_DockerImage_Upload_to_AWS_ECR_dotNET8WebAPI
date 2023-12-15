@@ -33,5 +33,6 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/dotnet8webapirepo:latest
+        tags: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
 
