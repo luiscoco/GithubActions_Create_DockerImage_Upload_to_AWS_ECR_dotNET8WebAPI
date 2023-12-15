@@ -9,6 +9,7 @@ on:
 env:
   ECR_REGISTRY: public.ecr.aws/x6y4g2f4  # Your AWS ECR Registry
   IMAGE_NAME: dotnet8webapirepo  # Replace with your image name
+  AWS_REGION: us-east-1  # Replace with your AWS region
 
 jobs:
   build_and_push:
@@ -21,6 +22,8 @@ jobs:
 
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
+      with:
+        region: ${{ env.AWS_REGION }}
 
     - name: Build and Push Image
       uses: docker/build-push-action@v2
